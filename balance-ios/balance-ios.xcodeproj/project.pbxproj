@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CA02931E20C663E400989A7B /* AVTonePlayerUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA02931D20C663E400989A7B /* AVTonePlayerUnit.swift */; };
+		CA02932120C6642D00989A7B /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = CA02932020C6642D00989A7B /* LICENSE.txt */; };
+		CA02932320C670E100989A7B /* AudioNotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA02932220C670E100989A7B /* AudioNotes.swift */; };
 		CAD14BD220C1E3B300E59C6E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD14BD120C1E3B300E59C6E /* AppDelegate.swift */; };
 		CAD14BD420C1E3B300E59C6E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD14BD320C1E3B300E59C6E /* ViewController.swift */; };
 		CAD14BD720C1E3B300E59C6E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CAD14BD520C1E3B300E59C6E /* Main.storyboard */; };
@@ -20,6 +23,9 @@
 		2FE858BC77D0D6DFC3A412CC /* Pods-balance-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-balance-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-balance-ios/Pods-balance-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		4EB2E3D243BA0C22E87403C0 /* Pods_balance_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_balance_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5ED76EA4F5056C29DE5D6289 /* Pods-balance-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-balance-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-balance-ios/Pods-balance-ios.release.xcconfig"; sourceTree = "<group>"; };
+		CA02931D20C663E400989A7B /* AVTonePlayerUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVTonePlayerUnit.swift; sourceTree = "<group>"; };
+		CA02932020C6642D00989A7B /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		CA02932220C670E100989A7B /* AudioNotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioNotes.swift; sourceTree = "<group>"; };
 		CAD14BCE20C1E3B300E59C6E /* balance-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "balance-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAD14BD120C1E3B300E59C6E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CAD14BD320C1E3B300E59C6E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -59,6 +65,16 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		CA02931F20C6641600989A7B /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				CA02931D20C663E400989A7B /* AVTonePlayerUnit.swift */,
+				CA02932020C6642D00989A7B /* LICENSE.txt */,
+				CA02932220C670E100989A7B /* AudioNotes.swift */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
 		CAD14BC520C1E3B300E59C6E = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				CAD14BE320C1E6DD00E59C6E /* Extensions */,
+				CA02931F20C6641600989A7B /* Audio */,
 				CAD14BD120C1E3B300E59C6E /* AppDelegate.swift */,
 				CAD14BD320C1E3B300E59C6E /* ViewController.swift */,
 				CAD14BD520C1E3B300E59C6E /* Main.storyboard */,
@@ -160,6 +177,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA02932120C6642D00989A7B /* LICENSE.txt in Resources */,
 				CAD14BDC20C1E3B500E59C6E /* LaunchScreen.storyboard in Resources */,
 				CAD14BD920C1E3B500E59C6E /* Assets.xcassets in Resources */,
 				CAD14BD720C1E3B300E59C6E /* Main.storyboard in Resources */,
@@ -228,8 +246,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				CAD14BD420C1E3B300E59C6E /* ViewController.swift in Sources */,
+				CA02932320C670E100989A7B /* AudioNotes.swift in Sources */,
 				CAD14BE520C1E6F400E59C6E /* DoubleEx.swift in Sources */,
 				CAD14BD220C1E3B300E59C6E /* AppDelegate.swift in Sources */,
+				CA02931E20C663E400989A7B /* AVTonePlayerUnit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -378,7 +398,10 @@
 				DEVELOPMENT_TEAM = 45Y5A23R85;
 				INFOPLIST_FILE = "balance-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.panchuanbo.balance-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -395,7 +418,10 @@
 				DEVELOPMENT_TEAM = 45Y5A23R85;
 				INFOPLIST_FILE = "balance-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.panchuanbo.balance-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
