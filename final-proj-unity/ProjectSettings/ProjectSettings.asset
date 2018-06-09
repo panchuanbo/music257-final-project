@@ -463,7 +463,6 @@ PlayerSettings:
   switchAllowsRuntimeAddOnContentInstall: 0
   switchDataLossConfirmation: 0
   switchSupportedNpadStyles: 3
-  switchNativeFsCacheSize: 32
   switchSocketConfigEnabled: 0
   switchTcpInitialSendBufferSize: 32
   switchTcpInitialReceiveBufferSize: 64
@@ -702,7 +701,7 @@ PlayerSettings:
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
   cloudProjectId: 8c70e493-40ab-4a17-9fac-44e8825522ce
-  projectName: 
+  projectName: final-proj-unity
   organizationId: panchuanbo
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
