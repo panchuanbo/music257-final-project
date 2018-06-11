@@ -3,21 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using ProgressBar;
 
 public class GM : MonoBehaviour {
 
+    private const bool kDebugMode = false;
     private const int kSoundOffset = 15;
-    private const int kSoundFrequency = 440;
+    private const int kSoundFrequency = 440 * 2;
     private const float kSkateboardBaseSpeed = 0.010f;
     private const float kBalanceThreshold = 0.08f;
-    private const float kEndOfWorld = -40.0f;//83.0f;
+    private const float kStartofWorld = -52.38848f;
+    private const float kEndOfWorld = 83.0f;
+    private const float kEndOfWorldDebug = -40.0f;
 
     // MARK: - Camera Rig
     public GameObject cameraRig;
-
+    
     // MARK: - Texts
-    public GameObject welcomeText;
+    public Text messageText;
     public Text balanceFeedbackText;
+
+    // MARK: - Progress Bar & Other Metrics
+    public GameObject speedRadial;
+    public GameObject gameProgress;
+    public GameObject grapher;
 
     // MARK: - Controller
     public GameObject leftController;   // Actual Controller
@@ -48,30 +57,27 @@ public class GM : MonoBehaviour {
         this.skateboardInput = rightController.GetComponent<SteamVR_TrackedStaticObject>();
 
         this.generator = this.gameObject.GetComponent<SineWaveGenerator>();
+        this.speedRadial.GetComponent<ProgressRadialBehaviour>().Value = skateboardSpeedLevel * 10;
+
+
+        this.speedRadial.SetActive(true);
+        this.gameProgress.SetActive(false);
     }
 	
 	// Update is called once per frame
 	void Update() {
-        updateSkateboard();
-        moveWorld();
+        moveCamera();
         adjustSoundAndText();
         checkGameEnd();
     }
 
     void FixedUpdate() {
-        balanceData.Add(quaterionToGyro(this.skateboardInput.transform.rotation).y);
+        grapher.GetComponent<GraphScript>().graph(quaterionToGyro(this.skateboardInput.transform.rotation).y * 10);
     }
 
     // MARK: - Game Management
 
-    private void updateSkateboard() {
-        //this.welcomeText.GetComponent<TextMesh>().text = "" + this.skateboardInput.transform.rotation.eulerAngles;
-
-        //Vector3 rot = this.rightController.transform.rotation.eulerAngles;
-        //this.skateboard.transform.rotation = Quaternion.Euler(rot.x - 90, rot.y, rot.z);
-    }
-
-    private void moveWorld() {
+    private void moveCamera() {
         if (!gameStarted) return;
         
         Vector3 oldPos = cameraRig.transform.position;
@@ -96,35 +102,43 @@ public class GM : MonoBehaviour {
                 this.generator.frequency2 = kSoundFrequency;
             }
 
-            if (Mathf.Abs(rotation) < kBalanceThreshold) {
-                balanceFeedbackText.text = "Balanced!";
-            } else if (rotation > kBalanceThreshold) {
-                if (rotation > kBalanceThreshold * 2) balanceFeedbackText.text = "Very Left";
-                else balanceFeedbackText.text = "Leaning Left";
-            } else if (rotation < -kBalanceThreshold) {
-                if (rotation < -kBalanceThreshold * 2) balanceFeedbackText.text = "Very Right";
-                else balanceFeedbackText.text = "Leaning Right";
-            }
+            if (kDebugMode) {
+                if (Mathf.Abs(rotation) < kBalanceThreshold) {
+                    balanceFeedbackText.text = "Balanced!";
+                } else if (rotation > kBalanceThreshold) {
+                    if (rotation > kBalanceThreshold * 2) balanceFeedbackText.text = "Very Left";
+                    else balanceFeedbackText.text = "Leaning Left";
+                } else if (rotation < -kBalanceThreshold) {
+                    if (rotation < -kBalanceThreshold * 2) balanceFeedbackText.text = "Very Right";
+                    else balanceFeedbackText.text = "Leaning Right";
+                }
 
-            if (Mathf.Abs(rotation) >= 0.27) {
-                fallCounter += 1;
-            }
+                if (Mathf.Abs(rotation) >= 0.27) {
+                    fallCounter += 1;
+                }
 
-            balanceFeedbackText.text += " " + rotation;
+                balanceFeedbackText.text += " " + rotation;
+            }
         }
     }
 
     private void checkGameEnd() {
-        if (cameraRig.transform.position.x > kEndOfWorld) {
-            welcomeText.GetComponent<TextMesh>().text = "You made it!";
-            welcomeText.SetActive(true);
+        float worldEndPosition = (kDebugMode) ? kEndOfWorldDebug : kEndOfWorld;
+
+        float offset = cameraRig.transform.position.x - kStartofWorld;
+        this.gameProgress.GetComponent<ProgressBarBehaviour>().Value = offset / (worldEndPosition - kStartofWorld) * 100;
+
+        if (cameraRig.transform.position.x > worldEndPosition) {
+            messageText.text = "You made it!";
+            messageText.enabled = true;
             gameFinished = true;
             gameStarted = false;
         }
     }
 
     private void playAgain() {
-        welcomeText.GetComponent<TextMesh>().text = "Press the trigger\nto begin!";
+        skateboardSpeedLevel = 1;
+        messageText.text = "Press the trigger\nto begin!";
         balanceData.Clear();
         fallCounter = 0;
         StartCoroutine("ResetScene");
@@ -141,12 +155,19 @@ public class GM : MonoBehaviour {
         if (gameFinished) {
             playAgain();
         } else {
+            Debug.Log("Got Clicked");
             if (gameStarted) {
-                this.welcomeText.SetActive(true);
+                this.speedRadial.SetActive(true);
+                messageText.enabled = true;
+
                 this.generator.stop();
+                this.gameProgress.SetActive(false);
             } else {
-                this.welcomeText.SetActive(false);
+                this.speedRadial.SetActive(false);
+                messageText.enabled = false;
+
                 this.generator.play();
+                this.gameProgress.SetActive(true);
             }
 
             this.gameStarted = !this.gameStarted;
@@ -155,14 +176,19 @@ public class GM : MonoBehaviour {
     }
 
     private void controllerPadClicked(object sender, ClickedEventArgs e) {
-        if (e.padY > 0.7f) {
+        Debug.Log("Clicked: " + e.padY);
+        if (e.padY > 0.5f) {
+            Debug.Log("INCREMENT");
             skateboardSpeedLevel += 1;
-        } else if (e.padY < -0.7f) {
+        } else if (e.padY < -0.5f) {
+            Debug.Log("DECREMENT");
             skateboardSpeedLevel -= 1;
         }
 
         if (skateboardSpeedLevel > 10) skateboardSpeedLevel = 10;
         if (skateboardSpeedLevel < 1) skateboardSpeedLevel = 1;
+
+        this.speedRadial.GetComponent<ProgressRadialBehaviour>().Value = skateboardSpeedLevel * 10;
     }
 
     // MARK: - Helpers
