@@ -17,7 +17,6 @@ public class SineWaveGenerator : MonoBehaviour {
     int timeIndex = 0;
 
     void Start() {
-        Debug.Log("HELLO");
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
         audioSource.spatialBlend = 0; //force 2D sound
